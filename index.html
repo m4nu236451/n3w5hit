@@ -78,10 +78,19 @@ body {
     50% { opacity: 0.72; }
 }
 
-.password-title,
-.intro-content h1,
-.page-section h2 {
-    animation: flicker 5s infinite;
+.password-title {
+ transform: translateX(-80px);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 9vw, 4rem);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin: 0 auto 18px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    left: 2px;
+    
 }
 
 .password-eyebrow,
@@ -149,13 +158,28 @@ body {
     margin-bottom: 20px;
 }
 
+.password-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .password-title {
+    width: 100%;
+    display: block;
+    text-align: center;
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: clamp(2.5rem, 9vw, 4rem);
     letter-spacing: -2px;
     line-height: 1;
-    margin-bottom: 18px;
+    margin: 0 0 18px;
+    padding: 0;
+    position: static;
 }
 
 .password-description {
@@ -863,7 +887,7 @@ footer {
         </p>
 
         <h1 class="password-title">
-            ACCESSO<br>NEGATO.
+            PASSWORD
         </h1>
 
         <p class="password-description">
@@ -896,7 +920,7 @@ footer {
         </form>
 
         <p class="password-footer">
-            M4NU / SISTEMA PRIVATO
+            M4NU
         </p>
 
     </div>
