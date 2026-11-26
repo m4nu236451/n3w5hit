@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="it">
 
@@ -292,7 +291,7 @@
             font-size: 0.9rem;
         }
 
-        /* COPERTINA CON BORDO ROSSO NEON */
+        /* COPERTINA */
 
         .artwork-placeholder {
             width: 100%;
@@ -300,18 +299,10 @@
             aspect-ratio: 1 / 1;
             object-fit: cover;
             background: var(--surface);
-
-            border: 2px solid #e50914;
-
+            border: 1px solid var(--border);
             margin: 30px auto;
             display: block;
-
-            box-shadow:
-                0 0 8px #e50914,
-                0 0 18px rgba(229, 9, 20, 0.8),
-                0 0 35px rgba(229, 9, 20, 0.5),
-                0 0 60px rgba(229, 9, 20, 0.25),
-                0 25px 60px rgba(0,0,0,0.85);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.85);
         }
 
         .album-name {
@@ -516,7 +507,6 @@
         /* MOBILE */
 
         @media (max-width: 600px) {
-
             #countdown-screen {
                 padding: 25px 18px;
             }
@@ -545,27 +535,27 @@
             }
 
             .tracklist .track {
-                text-shadow:
-                    0 0 6px rgba(255,255,255,0.7),
-                    0 0 14px rgba(229,9,20,0.5);
-            }
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.7),
+        0 0 14px rgba(229,9,20,0.5);
+}
 
-            .tracklist .track span:first-child {
-                color: #ff2633;
-                text-shadow:
-                    0 0 6px #e50914,
-                    0 0 15px rgba(229,9,20,0.9);
-            }
+.tracklist .track span:first-child {
+    color: #ff2633;
+    text-shadow:
+        0 0 6px #e50914,
+        0 0 15px rgba(229,9,20,0.9);
+}
 
-            .tracklist .track span:last-child {
-                color: #ff555d;
-                text-shadow: 0 0 10px rgba(229,9,20,0.7);
-            }
+.tracklist .track span:last-child {
+    color: #ff555d;
+    text-shadow: 0 0 10px rgba(229,9,20,0.7);
+}
 
-            .tracklist .track:hover {
-                background: rgba(229,9,20,0.16);
-                box-shadow: inset 3px 0 0 #e50914;
-            }
+.tracklist .track:hover {
+    background: rgba(229,9,20,0.16);
+    box-shadow: inset 3px 0 0 #e50914;
+}
 
             .track span:last-child {
                 font-size: 0.65rem;
@@ -596,7 +586,6 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-
             .scroll-arrow {
                 animation: none;
             }
@@ -605,7 +594,6 @@
                 animation: none;
             }
         }
-
     </style>
 </head>
 
@@ -799,21 +787,19 @@
             <h2>STORIA.</h2>
 
             <p class="concept-text">
-
                 COS'È: SICARIO?
 
                 <br><br>
 
                 **SICARIO** è il racconto di un viaggio dentro il caos. Un mondo fatto di illusioni, tradimenti, ambizione e contraddizioni, in cui ogni scelta ha un prezzo e niente è davvero come sembra.
 
-                Attraverso queste tracce racconto ciò che vedo, ciò che vivo e ciò che mi attraversa. Mi muovo tra realtà e finzione, tra eccessi e vuoti, tra persone di cui fidarmi e promesse destinate a crollare.
+Attraverso queste tracce racconto ciò che vedo, ciò che vivo e ciò che mi attraversa. Mi muovo tra realtà e finzione, tra eccessi e vuoti, tra persone di cui fidarmi e promesse destinate a crollare.
 
-                Cerco qualcosa, ma non so più distinguere se si tratti di potere, redenzione o semplicemente una via di fuga. Ogni esperienza lascia un segno, ogni errore diventa parte del percorso e ogni certezza sembra destinata a dissolversi.
+Cerco qualcosa, ma non so più distinguere se si tratti di potere, redenzione o semplicemente una via di fuga. Ogni esperienza lascia un segno, ogni errore diventa parte del percorso e ogni certezza sembra destinata a dissolversi.
 
-                **SICARIO** è il mio modo di dare forma a tutto questo. Non cerco di giustificarmi né di trovare risposte. Racconto le contraddizioni, le ossessioni e le conseguenze delle mie scelte.
+**SICARIO** è il mio modo di dare forma a tutto questo. Non cerco di giustificarmi né di trovare risposte. Racconto le contraddizioni, le ossessioni e le conseguenze delle mie scelte.
 
-                Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non posso più fingere di essere quello di prima.
-
+Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non posso più fingere di essere quello di prima.
             </p>
 
         </section>
@@ -870,7 +856,7 @@
     <script>
 
         // COUNTDOWN
-        // 26 NOVEMBRE 2026 - ORE 18:08 ITALIANE
+        // 24 NOVEMBRE 2026 - ORE 21:53 ITALIANE
 
         const targetDate = new Date(
             "2026-11-26T18:08:00+01:00"
@@ -878,4 +864,161 @@
 
         const daysElement = document.getElementById("days");
         const hoursElement = document.getElementById("hours");
-        const
+        const minutesElement = document.getElementById("minutes");
+        const secondsElement = document.getElementById("seconds");
+
+        const announcement = document.getElementById("announcement");
+        const debugButton = document.getElementById("debug-toggle");
+
+        // SBLOCCO AUTOMATICO
+
+        function unlockContent() {
+            announcement.classList.remove("locked");
+            announcement.classList.add("unlocked");
+        }
+
+        // AGGIORNAMENTO COUNTDOWN
+
+        function updateCountdown() {
+
+            const now = Date.now();
+            const distance = targetDate - now;
+
+            if (distance <= 0) {
+
+                daysElement.textContent = "00";
+                hoursElement.textContent = "00";
+                minutesElement.textContent = "00";
+                secondsElement.textContent = "00";
+
+                unlockContent();
+
+                return;
+            }
+
+            const days = Math.floor(
+                distance / (1000 * 60 * 60 * 24)
+            );
+
+            const hours = Math.floor(
+                (distance % (1000 * 60 * 60 * 24)) /
+                (1000 * 60 * 60)
+            );
+
+            const minutes = Math.floor(
+                (distance % (1000 * 60 * 60)) /
+                (1000 * 60)
+            );
+
+            const seconds = Math.floor(
+                (distance % (1000 * 60)) / 1000
+            );
+
+            daysElement.textContent = String(days).padStart(2, "0");
+            hoursElement.textContent = String(hours).padStart(2, "0");
+            minutesElement.textContent = String(minutes).padStart(2, "0");
+            secondsElement.textContent = String(seconds).padStart(2, "0");
+
+        }
+
+        // AGGIORNAMENTO IMMEDIATO E OGNI SECONDO
+
+        updateCountdown();
+
+        setInterval(updateCountdown, 1000);
+
+        // AUDIO DI SOTTOFONDO
+
+        const audio = document.getElementById("background-audio");
+        const audioButton = document.getElementById("audio-toggle");
+        const audioText = audioButton.querySelector(".audio-text");
+
+        audio.volume = 0.25;
+
+        function updateAudioButton(isPlaying) {
+
+            audioButton.classList.toggle("playing", isPlaying);
+
+            audioText.textContent = isPlaying
+                ? "DISATTIVA AUDIO"
+                : "ATTIVA AUDIO";
+
+            audioButton.setAttribute(
+                "aria-label",
+                isPlaying ? "Disattiva audio" : "Attiva audio"
+            );
+
+        }
+
+        audioButton.addEventListener("click", async () => {
+
+            if (audio.paused) {
+
+                try {
+
+                    await audio.play();
+                    updateAudioButton(true);
+
+                } catch (error) {
+
+                    console.error("Errore riproduzione audio:", error);
+                    audioText.textContent = "AUDIO NON DISPONIBILE";
+
+                }
+
+            } else {
+
+                audio.pause();
+                updateAudioButton(false);
+
+            }
+
+        });
+
+        audio.addEventListener("play", () => {
+            updateAudioButton(true);
+        });
+
+        audio.addEventListener("pause", () => {
+            updateAudioButton(false);
+        });
+
+        audio.addEventListener("error", () => {
+            console.error("Impossibile caricare background.mp3");
+        });
+
+        // MODALITÀ DEBUG
+        // Attivabile aggiungendo ?debug=1 all'URL
+
+        if (
+            new URLSearchParams(window.location.search).get("debug") === "1"
+        ) {
+
+            debugButton.hidden = false;
+
+            debugButton.addEventListener("click", function() {
+
+                const isLocked = announcement.classList.contains("locked");
+
+                if (isLocked) {
+
+                    announcement.classList.remove("locked");
+                    announcement.classList.add("unlocked");
+                    debugButton.textContent = "TEST BLOCCO";
+
+                } else {
+
+                    announcement.classList.remove("unlocked");
+                    announcement.classList.add("locked");
+                    debugButton.textContent = "TEST SBLOCCO";
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>
