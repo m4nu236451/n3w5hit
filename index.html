@@ -1,9 +1,12 @@
+```html
 <!DOCTYPE html>
 <html lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>S*****O — ANNUNCIO UFFICIALE</title>
     <meta name="description" content="L'annuncio ufficiale di un nuovo progetto musicale.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -289,7 +292,7 @@
             font-size: 0.9rem;
         }
 
-        /* COPERTINA */
+        /* COPERTINA CON BORDO ROSSO NEON */
 
         .artwork-placeholder {
             width: 100%;
@@ -297,10 +300,18 @@
             aspect-ratio: 1 / 1;
             object-fit: cover;
             background: var(--surface);
-            border: 1px solid var(--border);
+
+            border: 2px solid #e50914;
+
             margin: 30px auto;
             display: block;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+
+            box-shadow:
+                0 0 8px #e50914,
+                0 0 18px rgba(229, 9, 20, 0.8),
+                0 0 35px rgba(229, 9, 20, 0.5),
+                0 0 60px rgba(229, 9, 20, 0.25),
+                0 25px 60px rgba(0,0,0,0.85);
         }
 
         .album-name {
@@ -505,6 +516,7 @@
         /* MOBILE */
 
         @media (max-width: 600px) {
+
             #countdown-screen {
                 padding: 25px 18px;
             }
@@ -533,27 +545,27 @@
             }
 
             .tracklist .track {
-    text-shadow:
-        0 0 6px rgba(255,255,255,0.7),
-        0 0 14px rgba(229,9,20,0.5);
-}
+                text-shadow:
+                    0 0 6px rgba(255,255,255,0.7),
+                    0 0 14px rgba(229,9,20,0.5);
+            }
 
-.tracklist .track span:first-child {
-    color: #ff2633;
-    text-shadow:
-        0 0 6px #e50914,
-        0 0 15px rgba(229,9,20,0.9);
-}
+            .tracklist .track span:first-child {
+                color: #ff2633;
+                text-shadow:
+                    0 0 6px #e50914,
+                    0 0 15px rgba(229,9,20,0.9);
+            }
 
-.tracklist .track span:last-child {
-    color: #ff555d;
-    text-shadow: 0 0 10px rgba(229,9,20,0.7);
-}
+            .tracklist .track span:last-child {
+                color: #ff555d;
+                text-shadow: 0 0 10px rgba(229,9,20,0.7);
+            }
 
-.tracklist .track:hover {
-    background: rgba(229,9,20,0.16);
-    box-shadow: inset 3px 0 0 #e50914;
-}
+            .tracklist .track:hover {
+                background: rgba(229,9,20,0.16);
+                box-shadow: inset 3px 0 0 #e50914;
+            }
 
             .track span:last-child {
                 font-size: 0.65rem;
@@ -584,6 +596,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+
             .scroll-arrow {
                 animation: none;
             }
@@ -592,6 +605,7 @@
                 animation: none;
             }
         }
+
     </style>
 </head>
 
@@ -630,7 +644,7 @@
             <p class="eyebrow">M4NU</p>
 
             <h1>
-                <span>L'ATTESSSA</span> E' FINITA
+                <span>L'ATTESA</span> E' FINITA
             </h1>
 
             <div class="countdown">
@@ -785,19 +799,21 @@
             <h2>STORIA.</h2>
 
             <p class="concept-text">
+
                 COS'È: SICARIO?
 
                 <br><br>
 
                 **SICARIO** è il racconto di un viaggio dentro il caos. Un mondo fatto di illusioni, tradimenti, ambizione e contraddizioni, in cui ogni scelta ha un prezzo e niente è davvero come sembra.
 
-Attraverso queste tracce racconto ciò che vedo, ciò che vivo e ciò che mi attraversa. Mi muovo tra realtà e finzione, tra eccessi e vuoti, tra persone di cui fidarmi e promesse destinate a crollare.
+                Attraverso queste tracce racconto ciò che vedo, ciò che vivo e ciò che mi attraversa. Mi muovo tra realtà e finzione, tra eccessi e vuoti, tra persone di cui fidarmi e promesse destinate a crollare.
 
-Cerco qualcosa, ma non so più distinguere se si tratti di potere, redenzione o semplicemente una via di fuga. Ogni esperienza lascia un segno, ogni errore diventa parte del percorso e ogni certezza sembra destinata a dissolversi.
+                Cerco qualcosa, ma non so più distinguere se si tratti di potere, redenzione o semplicemente una via di fuga. Ogni esperienza lascia un segno, ogni errore diventa parte del percorso e ogni certezza sembra destinata a dissolversi.
 
-**SICARIO** è il mio modo di dare forma a tutto questo. Non cerco di giustificarmi né di trovare risposte. Racconto le contraddizioni, le ossessioni e le conseguenze delle mie scelte.
+                **SICARIO** è il mio modo di dare forma a tutto questo. Non cerco di giustificarmi né di trovare risposte. Racconto le contraddizioni, le ossessioni e le conseguenze delle mie scelte.
 
-Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non posso più fingere di essere quello di prima.
+                Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non posso più fingere di essere quello di prima.
+
             </p>
 
         </section>
@@ -854,7 +870,7 @@ Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non pos
     <script>
 
         // COUNTDOWN
-        // 24 NOVEMBRE 2026 - ORE 21:53 ITALIANE
+        // 26 NOVEMBRE 2026 - ORE 18:08 ITALIANE
 
         const targetDate = new Date(
             "2026-11-26T18:08:00+01:00"
@@ -1020,3 +1036,4 @@ Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non pos
 
 </body>
 </html>
+```
