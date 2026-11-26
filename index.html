@@ -1,1039 +1,1276 @@
-```html
+
 <!DOCTYPE html>
 <html lang="it">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>S*****O — ANNUNCIO UFFICIALE</title>
-    <meta name="description" content="L'annuncio ufficiale di un nuovo progetto musicale.">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg: #050505;
-            --surface: #0e0e0e;
-            --border: rgba(255,255,255,0.15);
-            --text: #f2f2f2;
-            --muted: #888888;
-            --accent: #e50914;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Space Mono', monospace;
-            overflow-x: hidden;
-            isolation: isolate;
-        }
-
-        /* VIDEO DI SFONDO */
-
-        #background-video {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0.65;
-            pointer-events: none;
-        }
-
-        .background-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            background: linear-gradient(
-                to bottom,
-                rgba(0,0,0,0.55),
-                rgba(0,0,0,0.35) 50%,
-                rgba(0,0,0,0.75)
-            );
-        }
-
-        /* COUNTDOWN */
-
-        #countdown-screen {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px 40px;
-            border-bottom: 1px solid var(--border);
-            background: radial-gradient(
-                circle at 50% 50%,
-                rgba(229,9,20,0.12),
-                rgba(5,5,5,0.25) 70%
-            );
-            position: relative;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            letter-spacing: 3px;
-        }
-
-        .brand {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-        }
-
-        .brand span {
-            color: var(--accent);
-        }
-
-        .top-label {
-            color: var(--muted);
-            font-size: 0.75rem;
-        }
-
-        .intro-content {
-            text-align: center;
-            max-width: 900px;
-            margin: 40px auto;
-        }
-
-        .eyebrow {
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            color: var(--accent);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .intro-content h1 {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: clamp(2.8rem, 8vw, 6.5rem);
-            line-height: 0.95;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .intro-content h1 span {
-            color: transparent;
-            -webkit-text-stroke: 1.5px var(--text);
-            letter-spacing: 2px;
-        }
-
-        .intro-description {
-            font-size: 1rem;
-            letter-spacing: 5px;
-            color: var(--muted);
-            margin-bottom: 50px;
-        }
-
-        .countdown {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: clamp(10px, 3vw, 30px);
-        }
-
-        .time-unit {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .time-unit span {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: clamp(2rem, 6vw, 4.5rem);
-            line-height: 1;
-        }
-
-        .time-unit small {
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            color: var(--muted);
-            margin-top: 10px;
-        }
-
-        .separator {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            color: var(--accent);
-            margin-top: -20px;
-        }
-
-        .bottom-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--muted);
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            gap: 8px;
-            transition: color 0.3s;
-        }
-
-        .bottom-label:hover {
-            color: var(--text);
-        }
-
-        .scroll-arrow {
-            animation: bounce 2s infinite;
-            color: var(--accent);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(6px);
-            }
-
-            60% {
-                transform: translateY(3px);
-            }
-        }
-
-        /* CONTENUTO BLOCCATO */
-
-        main.locked {
-            position: relative;
-            max-height: 85vh;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        main.locked .page-section {
-            filter: blur(12px);
-            opacity: 0.3;
-            pointer-events: none;
-            transition: all 0.6s ease;
-        }
-
-        main.locked::after {
-            content: "IL CONTENUTO VERRÀ SBLOCCATO AL TERMINE DEL COUNTDOWN";
-            position: absolute;
-            top: 35vh;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(5,5,5,0.92);
-            border: 1px solid var(--accent);
-            color: var(--text);
-            padding: 20px 30px;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-align: center;
-            z-index: 10;
-            width: 85%;
-            max-width: 500px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
-        }
-
-        main.unlocked {
-            max-height: none;
-            overflow: visible;
-        }
-
-        main.unlocked .page-section {
-            filter: none;
-            opacity: 1;
-            pointer-events: auto;
-            user-select: text;
-        }
-
-        main.unlocked::after {
-            display: none;
-        }
-
-        /* SEZIONI */
-
-        .page-section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 100px 30px;
-            border-bottom: 1px solid var(--border);
-            text-align: center;
-            background: rgba(5,5,5,0.12);
-        }
-
-        .page-section h2 {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            line-height: 1;
-            letter-spacing: -1px;
-            margin-bottom: 25px;
-        }
-
-        .section-description {
-            color: var(--muted);
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-        }
-
-        /* COPERTINA CON BORDO ROSSO NEON */
-
-        .artwork-placeholder {
-            width: 100%;
-            max-width: 380px;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            background: var(--surface);
-
-            border: 2px solid #e50914;
-
-            margin: 30px auto;
-            display: block;
-
-            box-shadow:
-                0 0 8px #e50914,
-                0 0 18px rgba(229, 9, 20, 0.8),
-                0 0 35px rgba(229, 9, 20, 0.5),
-                0 0 60px rgba(229, 9, 20, 0.25),
-                0 25px 60px rgba(0,0,0,0.85);
-        }
-
-        .album-name {
-            font-size: clamp(2rem, 5vw, 3.5rem) !important;
-            margin-bottom: 10px !important;
-            letter-spacing: 4px !important;
-        }
-
-        .artist-name {
-            color: var(--accent);
-            font-size: 0.85rem;
-            letter-spacing: 4px;
-        }
-
-        /* TRACKLIST LUMINOSA */
-
-        .tracklist {
-            margin-top: 50px;
-            text-align: left;
-            border-top: 1px solid rgba(229,9,20,0.5);
-            box-shadow: 0 -5px 25px rgba(229,9,20,0.12);
-        }
-
-        .track {
-            display: grid;
-            grid-template-columns: 50px 1fr auto;
-            align-items: center;
-            padding: 20px 10px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 8px rgba(255,255,255,0.15);
-            transition: background 0.3s ease,
-                        padding-left 0.3s ease,
-                        text-shadow 0.3s ease;
-        }
-
-        .track:hover {
-            background: rgba(229,9,20,0.12);
-            padding-left: 18px;
-            box-shadow: inset 3px 0 0 #e50914;
-        }
-
-        .track span:first-child {
-            color: #ff1a25;
-            font-weight: 700;
-            text-shadow: 0 0 8px rgba(229,9,20,0.8);
-        }
-
-        .track span:last-child {
-            color: var(--muted);
-            font-size: 0.8rem;
-        }
-
-        .track:hover span {
-            text-shadow: 0 0 12px rgba(229,9,20,0.7);
-        }
-
-        .track:hover span:first-child {
-            color: #ff333d;
-            text-shadow: 0 0 15px #e50914;
-        }
-
-        /* CONCEPT */
-
-        .concept-text {
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 2;
-            color: var(--muted);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
-
-        /* PUBBLICAZIONE */
-
-        .release-date {
-            color: var(--accent);
-            letter-spacing: 4px;
-            font-size: 0.9rem;
-            margin-bottom: 40px;
-        }
-
-        .release-platforms {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .release-platforms a {
-            display: inline-block;
-            border: 1px solid var(--border);
-            padding: 14px 35px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            transition: all 0.3s;
-        }
-
-        .release-platforms a:hover {
-            border-color: var(--accent);
-            background: rgba(229,9,20,0.1);
-            color: var(--accent);
-        }
-
-        .release-month {
-            color: var(--accent);
-            text-shadow: 0 0 12px rgba(229,9,20,0.65);
-        }
-
-        /* PULSANTE AUDIO */
-
-        #audio-toggle {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
-            background: rgba(5,5,5,0.88);
-            border: 1px solid rgba(229,9,20,0.65);
-            color: #f2f2f2;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        #audio-toggle:hover {
-            background: rgba(229,9,20,0.12);
-            border-color: #e50914;
-            box-shadow: 0 0 20px rgba(229,9,20,0.25);
-        }
-
-        .audio-icon {
-            color: #e50914;
-            font-size: 1.2rem;
-        }
-
-        .audio-indicator {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #666;
-            transition: background 0.3s;
-        }
-
-        #audio-toggle.playing .audio-indicator {
-            background: #e50914;
-            box-shadow: 0 0 10px #e50914;
-            animation: audioPulse 1s infinite;
-        }
-
-        @keyframes audioPulse {
-            50% {
-                opacity: 0.3;
-                transform: scale(0.7);
-            }
-        }
-
-        /* FOOTER */
-
-        footer {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            color: var(--muted);
-            line-height: 2.2;
-            background: rgba(5,5,5,0.35);
-        }
-
-        footer .brand {
-            color: var(--text);
-            margin-bottom: 10px;
-        }
-
-        /* DEBUG */
-
-        #debug-toggle {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            background: #111;
-            color: #fff;
-            border: 1px solid var(--accent);
-            padding: 8px 14px;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            cursor: pointer;
-            z-index: 999;
-            opacity: 0.7;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 600px) {
-
-            #countdown-screen {
-                padding: 25px 18px;
-            }
-
-            .topbar {
-                font-size: 0.65rem;
-                letter-spacing: 1px;
-            }
-
-            .top-label {
-                font-size: 0.6rem;
-            }
-
-            .intro-description {
-                font-size: 0.7rem;
-                letter-spacing: 2px;
-            }
-
-            .time-unit small {
-                font-size: 0.55rem;
-                letter-spacing: 1px;
-            }
-
-            .page-section {
-                padding: 75px 20px;
-            }
-
-            .tracklist .track {
-                text-shadow:
-                    0 0 6px rgba(255,255,255,0.7),
-                    0 0 14px rgba(229,9,20,0.5);
-            }
-
-            .tracklist .track span:first-child {
-                color: #ff2633;
-                text-shadow:
-                    0 0 6px #e50914,
-                    0 0 15px rgba(229,9,20,0.9);
-            }
-
-            .tracklist .track span:last-child {
-                color: #ff555d;
-                text-shadow: 0 0 10px rgba(229,9,20,0.7);
-            }
-
-            .tracklist .track:hover {
-                background: rgba(229,9,20,0.16);
-                box-shadow: inset 3px 0 0 #e50914;
-            }
-
-            .track span:last-child {
-                font-size: 0.65rem;
-            }
-
-            .concept-text {
-                font-size: 0.8rem;
-                letter-spacing: 1px;
-            }
-
-            main.locked::after {
-                font-size: 0.65rem;
-                letter-spacing: 1px;
-                padding: 18px;
-            }
-
-            #background-video {
-                opacity: 0.5;
-            }
-
-            #audio-toggle {
-                bottom: 18px;
-                left: 15px;
-                padding: 12px 15px;
-                font-size: 0.6rem;
-                gap: 9px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-
-            .scroll-arrow {
-                animation: none;
-            }
-
-            #audio-toggle.playing .audio-indicator {
-                animation: none;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>S*****O — ANNUNCIO UFFICIALE</title>
+<meta name="description" content="L'annuncio ufficiale di un nuovo progetto musicale.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+    --bg: #050505;
+    --surface: #0e0e0e;
+    --border: rgba(255,255,255,0.15);
+    --text: #f2f2f2;
+    --muted: #888888;
+    --accent: #e50914;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    isolation: isolate;
+}
+
+/* =========================
+   PASSWORD SCREEN
+========================= */
+
+#password-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#password-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.password-container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.password-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    margin-bottom: 65px;
+}
+
+.password-brand span {
+    color: var(--accent);
+}
+
+.password-eyebrow {
+    color: var(--accent);
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+}
+
+.password-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 9vw, 4rem);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 18px;
+}
+
+.password-description {
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    line-height: 2;
+    margin-bottom: 40px;
+}
+
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#password-input {
+    width: 100%;
+    padding: 19px;
+    background: #0c0c0c;
+    border: 1px solid rgba(255,255,255,0.2);
+    outline: none;
+    color: white;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    letter-spacing: 12px;
+    text-align: center;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+#password-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(229,9,20,0.2);
+}
+
+#password-input::placeholder {
+    color: #444;
+    letter-spacing: 8px;
+}
+
+#password-submit {
+    padding: 18px;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: white;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#password-submit:hover {
+    background: transparent;
+    box-shadow: 0 0 25px rgba(229,9,20,0.3);
+}
+
+#password-error {
+    color: var(--accent);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    min-height: 20px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#password-error.visible {
+    opacity: 1;
+}
+
+.password-footer {
+    margin-top: 70px;
+    color: #444;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+}
+
+/* ERRORE */
+
+@keyframes passwordShake {
+    0%, 100% { transform: translateX(0); }
+    15%, 45%, 75% { transform: translateX(-9px); }
+    30%, 60%, 90% { transform: translateX(9px); }
+}
+
+#password-screen.error .password-container {
+    animation: passwordShake 0.45s ease;
+}
+
+#password-screen.error #password-input {
+    border-color: var(--accent);
+    box-shadow: 0 0 25px rgba(229,9,20,0.35);
+}
+
+#password-screen.error .password-title {
+    color: var(--accent);
+}
+
+/* ACCESSO RIUSCITO */
+
+@keyframes accessSuccess {
+    0% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 1; filter: brightness(2); }
+    100% { opacity: 0; filter: brightness(1); }
+}
+
+#password-screen.success {
+    animation: accessSuccess 0.8s ease forwards;
+}
+
+/* =========================
+   VIDEO SFONDO
+========================= */
+
+#background-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.background-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.55),
+        rgba(0,0,0,0.35) 50%,
+        rgba(0,0,0,0.75)
+    );
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+#countdown-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 40px;
+    border-bottom: 1px solid var(--border);
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(229,9,20,0.12),
+        rgba(5,5,5,0.25) 70%
+    );
+    position: relative;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+}
+
+.brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+.brand span {
+    color: var(--accent);
+}
+
+.top-label {
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
+.intro-content {
+    text-align: center;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.intro-content h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 8vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.intro-content h1 span {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--text);
+    letter-spacing: 2px;
+}
+
+.intro-description {
+    font-size: 1rem;
+    letter-spacing: 5px;
+    color: var(--muted);
+    margin-bottom: 50px;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(10px, 3vw, 30px);
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-unit span {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    line-height: 1;
+}
+
+.time-unit small {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 10px;
+}
+
+.separator {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    color: var(--accent);
+    margin-top: -20px;
+}
+
+.bottom-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    gap: 8px;
+    transition: color 0.3s;
+}
+
+.bottom-label:hover {
+    color: var(--text);
+}
+
+.scroll-arrow {
+    animation: bounce 2s infinite;
+    color: var(--accent);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(6px); }
+    60% { transform: translateY(3px); }
+}
+
+/* =========================
+   CONTENUTO BLOCCATO
+========================= */
+
+main.locked {
+    position: relative;
+    max-height: 85vh;
+    overflow: hidden;
+    user-select: none;
+}
+
+main.locked .page-section {
+    filter: blur(12px);
+    opacity: 0.3;
+    pointer-events: none;
+    transition: all 0.6s ease;
+}
+
+main.locked::after {
+    content: "IL CONTENUTO VERRÀ SBLOCCATO AL TERMINE DEL COUNTDOWN";
+    position: absolute;
+    top: 35vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(5,5,5,0.92);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    padding: 20px 30px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-align: center;
+    z-index: 10;
+    width: 85%;
+    max-width: 500px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.9);
+}
+
+main.unlocked {
+    max-height: none;
+    overflow: visible;
+}
+
+main.unlocked .page-section {
+    filter: none;
+    opacity: 1;
+    pointer-events: auto;
+    user-select: text;
+}
+
+main.unlocked::after {
+    display: none;
+}
+
+/* =========================
+   SEZIONI
+========================= */
+
+.page-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 30px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    background: rgba(5,5,5,0.12);
+}
+
+.page-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 25px;
+}
+
+.section-description {
+    color: var(--muted);
+    letter-spacing: 3px;
+    font-size: 0.9rem;
+}
+
+/* COPERTINA */
+
+.artwork-placeholder {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: var(--surface);
+    border: 2px solid #e50914;
+    margin: 30px auto;
+    display: block;
+    box-shadow:
+        0 0 8px #e50914,
+        0 0 18px rgba(229,9,20,0.8),
+        0 0 35px rgba(229,9,20,0.5),
+        0 0 60px rgba(229,9,20,0.25),
+        0 25px 60px rgba(0,0,0,0.85);
+}
+
+.album-name {
+    font-size: clamp(2rem,5vw,3.5rem) !important;
+    margin-bottom: 10px !important;
+    letter-spacing: 4px !important;
+}
+
+.artist-name {
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+}
+
+/* TRACKLIST */
+
+.tracklist {
+    margin-top: 50px;
+    text-align: left;
+    border-top: 1px solid rgba(229,9,20,0.5);
+    box-shadow: 0 -5px 25px rgba(229,9,20,0.12);
+}
+
+.track {
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    align-items: center;
+    padding: 20px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255,255,255,0.15);
+    transition: background 0.3s ease,
+                padding-left 0.3s ease,
+                text-shadow 0.3s ease;
+}
+
+.track:hover {
+    background: rgba(229,9,20,0.12);
+    padding-left: 18px;
+    box-shadow: inset 3px 0 0 #e50914;
+}
+
+.track span:first-child {
+    color: #ff1a25;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(229,9,20,0.8);
+}
+
+.track span:last-child {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.track:hover span {
+    text-shadow: 0 0 12px rgba(229,9,20,0.7);
+}
+
+.track:hover span:first-child {
+    color: #ff333d;
+    text-shadow: 0 0 15px #e50914;
+}
+
+/* CONCEPT */
+
+.concept-text {
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 2;
+    color: var(--muted);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+/* PUBBLICAZIONE */
+
+.release-date {
+    color: var(--accent);
+    letter-spacing: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+}
+
+.release-platforms {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.release-platforms a {
+    display: inline-block;
+    border: 1px solid var(--border);
+    padding: 14px 35px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    transition: all 0.3s;
+}
+
+.release-platforms a:hover {
+    border-color: var(--accent);
+    background: rgba(229,9,20,0.1);
+    color: var(--accent);
+}
+
+.release-month {
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(229,9,20,0.65);
+}
+
+/* =========================
+   AUDIO
+========================= */
+
+#audio-toggle {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(5,5,5,0.88);
+    border: 1px solid rgba(229,9,20,0.65);
+    color: #f2f2f2;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#audio-toggle:hover {
+    background: rgba(229,9,20,0.12);
+    border-color: #e50914;
+    box-shadow: 0 0 20px rgba(229,9,20,0.25);
+}
+
+.audio-icon {
+    color: #e50914;
+    font-size: 1.2rem;
+}
+
+.audio-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #666;
+    transition: background 0.3s;
+}
+
+#audio-toggle.playing .audio-indicator {
+    background: #e50914;
+    box-shadow: 0 0 10px #e50914;
+    animation: audioPulse 1s infinite;
+}
+
+@keyframes audioPulse {
+    50% {
+        opacity: 0.3;
+        transform: scale(0.7);
+    }
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    line-height: 2.2;
+    background: rgba(5,5,5,0.35);
+}
+
+footer .brand {
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+/* DEBUG */
+
+#debug-toggle {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background: #111;
+    color: #fff;
+    border: 1px solid var(--accent);
+    padding: 8px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0.7;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    #countdown-screen {
+        padding: 25px 18px;
+    }
+
+    .topbar {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+    }
+
+    .top-label {
+        font-size: 0.6rem;
+    }
+
+    .intro-description {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+    }
+
+    .time-unit small {
+        font-size: 0.55rem;
+        letter-spacing: 1px;
+    }
+
+    .page-section {
+        padding: 75px 20px;
+    }
+
+    .tracklist .track {
+        text-shadow:
+            0 0 6px rgba(255,255,255,0.7),
+            0 0 14px rgba(229,9,20,0.5);
+    }
+
+    .tracklist .track span:first-child {
+        color: #ff2633;
+        text-shadow:
+            0 0 6px #e50914,
+            0 0 15px rgba(229,9,20,0.9);
+    }
+
+    .tracklist .track span:last-child {
+        color: #ff555d;
+        text-shadow: 0 0 10px rgba(229,9,20,0.7);
+    }
+
+    .tracklist .track:hover {
+        background: rgba(229,9,20,0.16);
+        box-shadow: inset 3px 0 0 #e50914;
+    }
+
+    .track span:last-child {
+        font-size: 0.65rem;
+    }
+
+    .concept-text {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
+    main.locked::after {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+        padding: 18px;
+    }
+
+    #background-video {
+        opacity: 0.5;
+    }
+
+    #audio-toggle {
+        bottom: 18px;
+        left: 15px;
+        padding: 12px 15px;
+        font-size: 0.6rem;
+        gap: 9px;
+    }
+
+    .password-brand {
+        margin-bottom: 50px;
+    }
+
+    .password-footer {
+        margin-top: 55px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-arrow,
+    #audio-toggle.playing .audio-indicator {
+        animation: none;
+    }
+}
+
+</style>
 </head>
 
 <body>
 
-    <!-- VIDEO DI SFONDO -->
+<!-- PASSWORD SCREEN -->
 
-    <video id="background-video" autoplay muted loop playsinline>
-        <source src="background.mp4" type="video/mp4">
-    </video>
+<div id="password-screen">
 
-    <div class="background-overlay"></div>
+    <div class="password-container">
 
-    <!-- AUDIO DI SOTTOFONDO -->
-
-    <audio id="background-audio" loop preload="auto">
-        <source src="background.mp3" type="audio/mpeg">
-    </audio>
-
-    <button id="audio-toggle" type="button" aria-label="Attiva audio">
-        <span class="audio-icon">♫</span>
-        <span class="audio-text">ATTIVA AUDIO</span>
-        <span class="audio-indicator"></span>
-    </button>
-
-    <!-- COUNTDOWN SCREEN -->
-
-    <section id="countdown-screen">
-
-        <div class="topbar">
-            <div class="brand">S<span>*****</span>O</div>
+        <div class="password-brand">
+            S<span>*****</span>O
         </div>
 
-        <div class="intro-content">
+        <p class="password-eyebrow">
+            RESTRICTED ACCESS
+        </p>
 
-            <p class="eyebrow">M4NU</p>
+        <h1 class="password-title">
+            INSERISCI<br>PASSWORD
+        </h1>
 
-            <h1>
-                <span>L'ATTESA</span> E' FINITA
-            </h1>
+        <p class="password-description">
+            CONTENUTO PROTETTO<br>
+            INSERISCI IL CODICE PER CONTINUARE.
+        </p>
 
-            <div class="countdown">
+        <form class="password-form" id="password-form">
 
-                <div class="time-unit">
-                    <span id="days">00</span>
-                    <small>GIORNI</small>
-                </div>
+            <input
+                type="password"
+                id="password-input"
+                placeholder="••••••"
+                maxlength="6"
+                inputmode="numeric"
+                pattern="[0-9]{6}"
+                autocomplete="off"
+                aria-label="Inserisci la password"
+                required
+            >
 
-                <div class="separator">:</div>
+            <p id="password-error">
+                ACCESSO NEGATO — RIPROVA
+            </p>
 
-                <div class="time-unit">
-                    <span id="hours">00</span>
-                    <small>ORE</small>
-                </div>
+            <button type="submit" id="password-submit">
+                AUTORIZZA ACCESSO →
+            </button>
 
-                <div class="separator">:</div>
+        </form>
 
-                <div class="time-unit">
-                    <span id="minutes">00</span>
-                    <small>MINUTI</small>
-                </div>
+        <p class="password-footer">
+            M4NU
+        </p>
 
-                <div class="separator">:</div>
+    </div>
 
-                <div class="time-unit">
-                    <span id="seconds">00</span>
-                    <small>SECONDI</small>
-                </div>
+</div>
 
+<!-- VIDEO DI SFONDO -->
+
+<video id="background-video" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
+</video>
+
+<div class="background-overlay"></div>
+
+<!-- AUDIO -->
+
+<audio id="background-audio" loop preload="auto">
+    <source src="background.mp3" type="audio/mpeg">
+</audio>
+
+<button id="audio-toggle" type="button" aria-label="Attiva audio">
+    <span class="audio-icon">♫</span>
+    <span class="audio-text">ATTIVA AUDIO</span>
+    <span class="audio-indicator"></span>
+</button>
+
+<!-- COUNTDOWN -->
+
+<section id="countdown-screen">
+
+    <div class="topbar">
+        <div class="brand">S<span>*****</span>O</div>
+    </div>
+
+    <div class="intro-content">
+
+        <p class="eyebrow">M4NU</p>
+
+        <h1>
+            <span>L'ATTESA</span> E' FINITA
+        </h1>
+
+        <div class="countdown">
+
+            <div class="time-unit">
+                <span id="days">00</span>
+                <small>GIORNI</small>
             </div>
-        </div>
 
-        <a href="#announcement" class="bottom-label">
-            SCOPRI DI PIÙ
-            <span class="scroll-arrow">↓</span>
-        </a>
+            <div class="separator">:</div>
+
+            <div class="time-unit">
+                <span id="hours">00</span>
+                <small>ORE</small>
+            </div>
+
+            <div class="separator">:</div>
+
+            <div class="time-unit">
+                <span id="minutes">00</span>
+                <small>MINUTI</small>
+            </div>
+
+            <div class="separator">:</div>
+
+            <div class="time-unit">
+                <span id="seconds">00</span>
+                <small>SECONDI</small>
+            </div>
+
+        </div>
+    </div>
+
+    <a href="#announcement" class="bottom-label">
+        SCOPRI DI PIÙ
+        <span class="scroll-arrow">↓</span>
+    </a>
+
+</section>
+
+<!-- ANNUNCIO -->
+
+<main id="announcement" class="locked">
+
+    <!-- COPERTINA -->
+
+    <section class="page-section">
+
+        <p class="eyebrow">01 / IL PROGETTO</p>
+
+        <p class="section-description">
+            IL PROGETTO PIU' AMBIZIOSO
+        </p>
+
+        <img
+            src="cover.png"
+            alt="Copertina del progetto"
+            class="artwork-placeholder"
+        >
+
+        <h2 class="album-name">SICARIO</h2>
+
+        <p class="artist-name">M4NU</p>
 
     </section>
 
-    <!-- ANNUNCIO -->
+    <!-- TRACKLIST -->
 
-    <main id="announcement" class="locked">
+    <section class="page-section">
 
-        <!-- COPERTINA -->
+        <p class="eyebrow">02 / TRACKLIST</p>
 
-        <section class="page-section">
+        <h2>TRACKLIST</h2>
 
-            <p class="eyebrow">01 / IL PROGETTO</p>
+        <div class="tracklist">
 
-            <p class="section-description">
-                IL PROGETTO PIU' AMBIZIOSO
-            </p>
+            <div class="track"><span>01</span><span>-459.67 °F</span></div>
+            <div class="track"><span>02</span><span>SAN PAUL GAULTIER</span></div>
+            <div class="track"><span>03</span><span>SICARIO</span></div>
+            <div class="track"><span>04</span><span>RATTI SVIZZERI</span></div>
+            <div class="track"><span>05</span><span>DIVINA TRAGEDIA</span></div>
+            <div class="track"><span>06</span><span>PIAGA</span></div>
+            <div class="track"><span>07</span><span>ALASKA</span></div>
+            <div class="track"><span>08</span><span>OCCHI + ROSSI</span></div>
+            <div class="track"><span>09</span><span>CARTE FALSE</span></div>
+            <div class="track"><span>10</span><span>OCEAN DRIVE</span></div>
+            <div class="track"><span>11</span><span>NEW JERSEY</span></div>
+            <div class="track"><span>12</span><span>BLURAY</span></div>
+            <div class="track"><span>13</span><span>IDROGENO</span></div>
 
-            <img
-                src="cover.png"
-                alt="Copertina del progetto"
-                class="artwork-placeholder"
+        </div>
+
+    </section>
+
+    <!-- CONCEPT -->
+
+    <section class="page-section">
+
+        <p class="eyebrow">03 / IL CONCEPT</p>
+
+        <h2>STORIA.</h2>
+
+        <p class="concept-text">
+
+            COS'È: SICARIO?
+
+            <br><br>
+
+            <strong>SICARIO</strong> è il racconto di un viaggio dentro il caos. Un mondo fatto di illusioni, tradimenti, ambizione e contraddizioni, in cui ogni scelta ha un prezzo e niente è davvero come sembra.
+
+            Attraverso queste tracce racconto ciò che vedo, ciò che vivo e ciò che mi attraversa. Mi muovo tra realtà e finzione, tra eccessi e vuoti, tra persone di cui fidarmi e promesse destinate a crollare.
+
+            Cerco qualcosa, ma non so più distinguere se si tratti di potere, redenzione o semplicemente una via di fuga. Ogni esperienza lascia un segno, ogni errore diventa parte del percorso e ogni certezza sembra destinata a dissolversi.
+
+            <strong>SICARIO</strong> è il mio modo di dare forma a tutto questo. Non cerco di giustificarmi né di trovare risposte. Racconto le contraddizioni, le ossessioni e le conseguenze delle mie scelte.
+
+            Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non posso più fingere di essere quello di prima.
+
+        </p>
+
+    </section>
+
+    <!-- RELEASE -->
+
+    <section class="page-section">
+
+        <p class="eyebrow">04 / DATA DI USCITA</p>
+
+        <h2>
+            IN ARRIVO IL<br>
+            <span class="release-month">5 / 12</span>
+        </h2>
+
+        <p class="release-date">
+            ATTIVA LA CAMPANELLA PER NON PERDERTI L'ALBUM
+        </p>
+
+        <div class="release-platforms">
+
+            <a
+                href="https://www.youtube.com/@PRODM0NS73R"
+                target="_blank"
+                rel="noopener noreferrer"
             >
+                YOUTUBE ↗
+            </a>
 
-            <h2 class="album-name">SICARIO</h2>
+        </div>
 
-            <p class="artist-name">M4NU</p>
+    </section>
 
-        </section>
+</main>
 
-        <!-- TRACKLIST -->
+<!-- FOOTER -->
 
-        <section class="page-section">
+<footer>
 
-            <p class="eyebrow">02 / TRACKLIST</p>
+    <div class="brand">S<span>*****</span>O</div>
 
-            <h2>TRACKLIST</h2>
+    <p>TUTTI I DIRITTI RISERVATI © 2026</p>
 
-            <div class="tracklist">
+</footer>
 
-                <div class="track">
-                    <span>01</span>
-                    <span>-459.67 °F</span>
-                </div>
+<!-- DEBUG -->
 
-                <div class="track">
-                    <span>02</span>
-                    <span>SAN PAUL GAULTIER</span>
-                </div>
+<button id="debug-toggle" hidden>
+    TEST SBLOCCO
+</button>
 
-                <div class="track">
-                    <span>03</span>
-                    <span>SICARIO</span>
-                </div>
+<!-- JAVASCRIPT -->
 
-                <div class="track">
-                    <span>04</span>
-                    <span>RATTI SVIZZERI</span>
-                </div>
+<script>
 
-                <div class="track">
-                    <span>05</span>
-                    <span>DIVINA TRAGEDIA</span>
-                </div>
+/* =========================
+   PASSWORD SYSTEM
+========================= */
 
-                <div class="track">
-                    <span>06</span>
-                    <span>PIAGA</span>
-                </div>
+const correctPassword = "236451";
 
-                <div class="track">
-                    <span>07</span>
-                    <span>ALASKA</span>
-                </div>
+const passwordScreen = document.getElementById("password-screen");
+const passwordForm = document.getElementById("password-form");
+const passwordInput = document.getElementById("password-input");
+const passwordError = document.getElementById("password-error");
 
-                <div class="track">
-                    <span>08</span>
-                    <span>OCCHI + ROSSI</span>
-                </div>
+passwordForm.addEventListener("submit", function(event) {
 
-                <div class="track">
-                    <span>09</span>
-                    <span>CARTE FALSE</span>
-                </div>
+    event.preventDefault();
 
-                <div class="track">
-                    <span>10</span>
-                    <span>OCEAN DRIVE</span>
-                </div>
+    const enteredPassword = passwordInput.value;
 
-                <div class="track">
-                    <span>11</span>
-                    <span>NEW JERSEY</span>
-                </div>
+    if (enteredPassword === correctPassword) {
 
-                <div class="track">
-                    <span>12</span>
-                    <span>BLURAY</span>
-                </div>
+        passwordError.classList.remove("visible");
 
-                <div class="track">
-                    <span>13</span>
-                    <span>IDROGENO</span>
-                </div>
+        passwordScreen.classList.remove("error");
+        passwordScreen.classList.add("success");
 
-            </div>
+        passwordInput.disabled = true;
+        document.getElementById("password-submit").disabled = true;
 
-        </section>
+        setTimeout(function() {
 
-        <!-- CONCEPT -->
+            passwordScreen.classList.add("hidden");
 
-        <section class="page-section">
+        }, 700);
 
-            <p class="eyebrow">03 / IL CONCEPT</p>
+    } else {
 
-            <h2>STORIA.</h2>
+        passwordScreen.classList.remove("error");
 
-            <p class="concept-text">
+        // Riavvia l'animazione di errore
+        void passwordScreen.offsetWidth;
 
-                COS'È: SICARIO?
+        passwordScreen.classList.add("error");
 
-                <br><br>
+        passwordError.textContent = "ACCESSO NEGATO — RIPROVA";
+        passwordError.classList.add("visible");
 
-                **SICARIO** è il racconto di un viaggio dentro il caos. Un mondo fatto di illusioni, tradimenti, ambizione e contraddizioni, in cui ogni scelta ha un prezzo e niente è davvero come sembra.
+        passwordInput.value = "";
 
-                Attraverso queste tracce racconto ciò che vedo, ciò che vivo e ciò che mi attraversa. Mi muovo tra realtà e finzione, tra eccessi e vuoti, tra persone di cui fidarmi e promesse destinate a crollare.
+        passwordInput.focus();
 
-                Cerco qualcosa, ma non so più distinguere se si tratti di potere, redenzione o semplicemente una via di fuga. Ogni esperienza lascia un segno, ogni errore diventa parte del percorso e ogni certezza sembra destinata a dissolversi.
+        setTimeout(function() {
+            passwordScreen.classList.remove("error");
+        }, 500);
 
-                **SICARIO** è il mio modo di dare forma a tutto questo. Non cerco di giustificarmi né di trovare risposte. Racconto le contraddizioni, le ossessioni e le conseguenze delle mie scelte.
+    }
 
-                Non so dove finirà questo viaggio. So soltanto che, una volta iniziato, non posso più fingere di essere quello di prima.
+});
 
-            </p>
+// Rimuove il messaggio mentre si digita
+passwordInput.addEventListener("input", function() {
 
-        </section>
+    passwordError.classList.remove("visible");
+    passwordScreen.classList.remove("error");
 
-        <!-- RELEASE -->
+});
 
-        <section class="page-section">
+/* =========================
+   COUNTDOWN
+========================= */
 
-            <p class="eyebrow">04 / DATA DI USCITA</p>
+const targetDate = new Date(
+    "2026-11-26T18:08:00+01:00"
+).getTime();
 
-            <h2>
-                IN ARRIVO IL<br>
-                <span class="release-month">5 / 12</span>
-            </h2>
+const daysElement = document.getElementById("days");
+const hoursElement = document.getElementById("hours");
+const minutesElement = document.getElementById("minutes");
+const secondsElement = document.getElementById("seconds");
 
-            <p class="release-date">
-                ATTIVA LA CAMPANELLA PER NON PERDERTI L'ALBUM
-            </p>
+const announcement = document.getElementById("announcement");
+const debugButton = document.getElementById("debug-toggle");
 
-            <div class="release-platforms">
+function unlockContent() {
 
-                <a
-                    href="https://www.youtube.com/@PRODM0NS73R"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    YOUTUBE ↗
-                </a>
+    announcement.classList.remove("locked");
+    announcement.classList.add("unlocked");
 
-            </div>
+}
 
-        </section>
+function updateCountdown() {
 
-    </main>
+    const now = Date.now();
+    const distance = targetDate - now;
 
-    <!-- FOOTER -->
+    if (distance <= 0) {
 
-    <footer>
+        daysElement.textContent = "00";
+        hoursElement.textContent = "00";
+        minutesElement.textContent = "00";
+        secondsElement.textContent = "00";
 
-        <div class="brand">S<span>*****</span>O</div>
+        unlockContent();
 
-        <p>TUTTI I DIRITTI RISERVATI © 2026</p>
+        return;
 
-    </footer>
+    }
 
-    <!-- DEBUG BUTTON -->
+    const days = Math.floor(
+        distance / (1000 * 60 * 60 * 24)
+    );
 
-    <button id="debug-toggle" hidden>
-        TEST SBLOCCO
-    </button>
+    const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) /
+        (1000 * 60 * 60)
+    );
 
-    <!-- JAVASCRIPT -->
+    const minutes = Math.floor(
+        (distance % (1000 * 60 * 60)) /
+        (1000 * 60)
+    );
 
-    <script>
+    const seconds = Math.floor(
+        (distance % (1000 * 60)) / 1000
+    );
 
-        // COUNTDOWN
-        // 26 NOVEMBRE 2026 - ORE 18:08 ITALIANE
+    daysElement.textContent = String(days).padStart(2, "0");
+    hoursElement.textContent = String(hours).padStart(2, "0");
+    minutesElement.textContent = String(minutes).padStart(2, "0");
+    secondsElement.textContent = String(seconds).padStart(2, "0");
 
-        const targetDate = new Date(
-            "2026-11-26T18:08:00+01:00"
-        ).getTime();
+}
 
-        const daysElement = document.getElementById("days");
-        const hoursElement = document.getElementById("hours");
-        const minutesElement = document.getElementById("minutes");
-        const secondsElement = document.getElementById("seconds");
+updateCountdown();
 
-        const announcement = document.getElementById("announcement");
-        const debugButton = document.getElementById("debug-toggle");
+setInterval(updateCountdown, 1000);
 
-        // SBLOCCO AUTOMATICO
+/* =========================
+   AUDIO
+========================= */
 
-        function unlockContent() {
+const audio = document.getElementById("background-audio");
+const audioButton = document.getElementById("audio-toggle");
+const audioText = audioButton.querySelector(".audio-text");
+
+audio.volume = 0.25;
+
+function updateAudioButton(isPlaying) {
+
+    audioButton.classList.toggle("playing", isPlaying);
+
+    audioText.textContent = isPlaying
+        ? "DISATTIVA AUDIO"
+        : "ATTIVA AUDIO";
+
+    audioButton.setAttribute(
+        "aria-label",
+        isPlaying ? "Disattiva audio" : "Attiva audio"
+    );
+
+}
+
+audioButton.addEventListener("click", async function() {
+
+    if (audio.paused) {
+
+        try {
+
+            await audio.play();
+            updateAudioButton(true);
+
+        } catch (error) {
+
+            console.error("Errore riproduzione audio:", error);
+            audioText.textContent = "AUDIO NON DISPONIBILE";
+
+        }
+
+    } else {
+
+        audio.pause();
+        updateAudioButton(false);
+
+    }
+
+});
+
+audio.addEventListener("play", function() {
+    updateAudioButton(true);
+});
+
+audio.addEventListener("pause", function() {
+    updateAudioButton(false);
+});
+
+audio.addEventListener("error", function() {
+    console.error("Impossibile caricare background.mp3");
+});
+
+/* =========================
+   DEBUG
+========================= */
+
+if (
+    new URLSearchParams(window.location.search).get("debug") === "1"
+) {
+
+    debugButton.hidden = false;
+
+    debugButton.addEventListener("click", function() {
+
+        const isLocked = announcement.classList.contains("locked");
+
+        if (isLocked) {
+
             announcement.classList.remove("locked");
             announcement.classList.add("unlocked");
-        }
+            debugButton.textContent = "TEST BLOCCO";
 
-        // AGGIORNAMENTO COUNTDOWN
+        } else {
 
-        function updateCountdown() {
-
-            const now = Date.now();
-            const distance = targetDate - now;
-
-            if (distance <= 0) {
-
-                daysElement.textContent = "00";
-                hoursElement.textContent = "00";
-                minutesElement.textContent = "00";
-                secondsElement.textContent = "00";
-
-                unlockContent();
-
-                return;
-            }
-
-            const days = Math.floor(
-                distance / (1000 * 60 * 60 * 24)
-            );
-
-            const hours = Math.floor(
-                (distance % (1000 * 60 * 60 * 24)) /
-                (1000 * 60 * 60)
-            );
-
-            const minutes = Math.floor(
-                (distance % (1000 * 60 * 60)) /
-                (1000 * 60)
-            );
-
-            const seconds = Math.floor(
-                (distance % (1000 * 60)) / 1000
-            );
-
-            daysElement.textContent = String(days).padStart(2, "0");
-            hoursElement.textContent = String(hours).padStart(2, "0");
-            minutesElement.textContent = String(minutes).padStart(2, "0");
-            secondsElement.textContent = String(seconds).padStart(2, "0");
+            announcement.classList.remove("unlocked");
+            announcement.classList.add("locked");
+            debugButton.textContent = "TEST SBLOCCO";
 
         }
 
-        // AGGIORNAMENTO IMMEDIATO E OGNI SECONDO
+    });
 
-        updateCountdown();
+}
 
-        setInterval(updateCountdown, 1000);
-
-        // AUDIO DI SOTTOFONDO
-
-        const audio = document.getElementById("background-audio");
-        const audioButton = document.getElementById("audio-toggle");
-        const audioText = audioButton.querySelector(".audio-text");
-
-        audio.volume = 0.25;
-
-        function updateAudioButton(isPlaying) {
-
-            audioButton.classList.toggle("playing", isPlaying);
-
-            audioText.textContent = isPlaying
-                ? "DISATTIVA AUDIO"
-                : "ATTIVA AUDIO";
-
-            audioButton.setAttribute(
-                "aria-label",
-                isPlaying ? "Disattiva audio" : "Attiva audio"
-            );
-
-        }
-
-        audioButton.addEventListener("click", async () => {
-
-            if (audio.paused) {
-
-                try {
-
-                    await audio.play();
-                    updateAudioButton(true);
-
-                } catch (error) {
-
-                    console.error("Errore riproduzione audio:", error);
-                    audioText.textContent = "AUDIO NON DISPONIBILE";
-
-                }
-
-            } else {
-
-                audio.pause();
-                updateAudioButton(false);
-
-            }
-
-        });
-
-        audio.addEventListener("play", () => {
-            updateAudioButton(true);
-        });
-
-        audio.addEventListener("pause", () => {
-            updateAudioButton(false);
-        });
-
-        audio.addEventListener("error", () => {
-            console.error("Impossibile caricare background.mp3");
-        });
-
-        // MODALITÀ DEBUG
-        // Attivabile aggiungendo ?debug=1 all'URL
-
-        if (
-            new URLSearchParams(window.location.search).get("debug") === "1"
-        ) {
-
-            debugButton.hidden = false;
-
-            debugButton.addEventListener("click", function() {
-
-                const isLocked = announcement.classList.contains("locked");
-
-                if (isLocked) {
-
-                    announcement.classList.remove("locked");
-                    announcement.classList.add("unlocked");
-                    debugButton.textContent = "TEST BLOCCO";
-
-                } else {
-
-                    announcement.classList.remove("unlocked");
-                    announcement.classList.add("locked");
-                    debugButton.textContent = "TEST SBLOCCO";
-
-                }
-
-            });
-
-        }
-
-    </script>
+</script>
 
 </body>
 </html>
-```
