@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 
@@ -43,7 +44,7 @@ body {
 }
 
 /* =========================
-   EFFETTO LAMPEGGIANTE
+   ANIMAZIONI
 ========================= */
 
 @keyframes flicker {
@@ -78,7 +79,7 @@ body {
 }
 
 .password-title {
- transform: translateX(-80px);
+    transform: translateX(-85px);
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: clamp(2.5rem, 9vw, 4rem);
@@ -87,9 +88,6 @@ body {
     margin: 0 auto 18px;
     width: 100%;
     text-align: center;
-    position: relative;
-    left: 2px;
-    
 }
 
 .password-eyebrow,
@@ -135,7 +133,11 @@ body {
 .password-container {
     width: 100%;
     max-width: 420px;
+    margin: 0 auto;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .password-brand {
@@ -157,16 +159,6 @@ body {
     margin-bottom: 20px;
 }
 
-.password-container {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .password-title {
     width: 100%;
     display: block;
@@ -178,7 +170,6 @@ body {
     line-height: 1;
     margin: 0 0 18px;
     padding: 0;
-    position: static;
 }
 
 .password-description {
@@ -190,6 +181,7 @@ body {
 }
 
 .password-form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -234,6 +226,11 @@ body {
 #password-submit:hover {
     background: transparent;
     box-shadow: 0 0 25px rgba(229,9,20,0.3);
+}
+
+#password-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 #password-error {
@@ -673,63 +670,6 @@ main.unlocked::after {
     text-shadow: 0 0 12px rgba(229,9,20,0.65);
 }
 
-/* =========================
-   AUDIO PRINCIPALE
-========================= */
-
-#audio-toggle {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
-    background: rgba(5,5,5,0.88);
-    border: 1px solid rgba(229,9,20,0.65);
-    color: #f2f2f2;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-#audio-toggle:hover {
-    background: rgba(229,9,20,0.12);
-    border-color: #e50914;
-    box-shadow: 0 0 20px rgba(229,9,20,0.25);
-}
-
-.audio-icon {
-    color: #e50914;
-    font-size: 1.2rem;
-}
-
-.audio-indicator {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #666;
-    transition: background 0.3s;
-}
-
-#audio-toggle.playing .audio-indicator {
-    background: #e50914;
-    box-shadow: 0 0 10px #e50914;
-    animation: audioPulse 1s infinite;
-}
-
-@keyframes audioPulse {
-    50% {
-        opacity: 0.3;
-        transform: scale(0.7);
-    }
-}
-
 /* FOOTER */
 
 footer {
@@ -829,14 +769,6 @@ footer {
         opacity: 0.5;
     }
 
-    #audio-toggle {
-        bottom: 18px;
-        left: 15px;
-        padding: 12px 15px;
-        font-size: 0.6rem;
-        gap: 9px;
-    }
-
     .password-brand {
         margin-bottom: 50px;
     }
@@ -850,7 +782,7 @@ footer {
     }
 }
 
-/* RISPETTO ANIMAZIONI RIDOTTE */
+/* ANIMAZIONI RIDOTTE */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -926,17 +858,13 @@ footer {
 
 </div>
 
-<!-- =========================
-     AUDIO SCHERMATA PASSWORD
-========================= -->
+<!-- AUDIO SCHERMATA PASSWORD -->
 
 <audio id="password-audio" loop preload="auto">
     <source src="vinile.mp3" type="audio/mpeg">
 </audio>
 
-<!-- =========================
-     VIDEO DI SFONDO
-========================= -->
+<!-- VIDEO DI SFONDO -->
 
 <video id="background-video" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
@@ -944,19 +872,11 @@ footer {
 
 <div class="background-overlay"></div>
 
-<!-- =========================
-     AUDIO PRINCIPALE
-========================= -->
+<!-- AUDIO PRINCIPALE: NON HA AUTOPLAY -->
 
 <audio id="background-audio" loop preload="auto">
     <source src="background.mp3" type="audio/mpeg">
 </audio>
-
-<button id="audio-toggle" type="button" aria-label="Attiva audio">
-    <span class="audio-icon">♫</span>
-    <span class="audio-text">ATTIVA AUDIO</span>
-    <span class="audio-indicator"></span>
-</button>
 
 <!-- =========================
      COUNTDOWN
@@ -1065,7 +985,15 @@ footer {
             <div class="track"><span>10</span><span>OCEAN DRIVE</span></div>
             <div class="track"><span>11</span><span>NEW JERSEY</span></div>
             <div class="track"><span>12</span><span>BLURAY</span></div>
-            <div class="track"><span>13</span><span>IDROGENO</span></div>
+            <div class="track"><span>13</span><span>-</span></div>
+            <div class="track"><span>14</span><span>-</span></div>
+            <div class="track"><span>15</span><span>-</span></div>
+            <div class="track"><span>16</span><span>-</span></div>
+            <div class="track"><span>17</span><span>-</span></div>
+            <div class="track"><span>18</span><span>-</span></div>
+            <div class="track"><span>19</span><span>-</span></div>
+            <div class="track"><span>20</span><span>-</span></div>
+
 
         </div>
 
@@ -1131,7 +1059,7 @@ footer {
 </main>
 
 <!-- =========================
-     PIEDE PAGINA
+     FOOTER
 ========================= -->
 
 <footer>
@@ -1155,7 +1083,7 @@ footer {
 <script>
 
 /* =========================
-   SISTEMA PASSWORD
+   ELEMENTI
 ========================= */
 
 const correctPassword = "236451";
@@ -1166,79 +1094,146 @@ const passwordInput = document.getElementById("password-input");
 const passwordError = document.getElementById("password-error");
 const passwordSubmit = document.getElementById("password-submit");
 
+const passwordAudio = document.getElementById("password-audio");
+const backgroundAudio = document.getElementById("background-audio");
+
+const announcement = document.getElementById("announcement");
+const debugButton = document.getElementById("debug-toggle");
+
+/* =========================
+   STATO ACCESSO
+========================= */
+
+let accessGranted = false;
+let passwordAudioStarted = false;
+let backgroundAudioStarted = false;
+
+passwordAudio.volume = 0.35;
+backgroundAudio.volume = 0.25;
+
 /* =========================
    AUDIO VINILE
 ========================= */
 
-const passwordAudio = document.getElementById("password-audio");
-
-passwordAudio.volume = 0.35;
-
-let passwordAudioStarted = false;
-
 async function startPasswordAudio() {
 
-    if (passwordAudioStarted || passwordScreen.classList.contains("hidden")) {
+    if (accessGranted || passwordAudioStarted) {
         return;
     }
 
     try {
 
         await passwordAudio.play();
+
         passwordAudioStarted = true;
 
     } catch (error) {
 
-        // Alcuni browser bloccano l'audio automatico.
-        // Verrà riprovato dopo la prima interazione dell'utente.
+        // L'autoplay può essere bloccato dal browser.
+        // Verrà riprovato alla prima interazione.
 
     }
 
 }
 
-// Tentativo automatico all'apertura
+// Tentativo automatico all'apertura della pagina.
+
 startPasswordAudio();
 
-// Avvia l'audio alla prima interazione se il browser
-// ha bloccato la riproduzione automatica.
+/* =========================
+   PRIMA INTERAZIONE
+========================= */
 
 function enablePasswordAudio() {
 
-    if (!passwordAudioStarted && !passwordScreen.classList.contains("hidden")) {
+    if (
+        !accessGranted &&
+        !passwordAudioStarted &&
+        !passwordScreen.classList.contains("hidden")
+    ) {
+
         startPasswordAudio();
+
     }
 
 }
 
 document.addEventListener("pointerdown", enablePasswordAudio);
 document.addEventListener("keydown", enablePasswordAudio);
+document.addEventListener("touchstart", enablePasswordAudio);
 
-// Verifica password
+/* =========================
+   AUDIO PRINCIPALE
+========================= */
 
-passwordForm.addEventListener("submit", function(event) {
+async function startBackgroundAudio() {
+
+    if (!accessGranted || backgroundAudioStarted) {
+        return;
+    }
+
+    try {
+
+        await backgroundAudio.play();
+
+        backgroundAudioStarted = true;
+
+    } catch (error) {
+
+        // Se il browser blocca la riproduzione,
+        // sarà possibile riprovare con un'interazione.
+
+        console.warn("Riproduzione audio non riuscita:", error);
+
+    }
+
+}
+
+/* =========================
+   PASSWORD
+========================= */
+
+passwordForm.addEventListener("submit", async function(event) {
 
     event.preventDefault();
+
+    if (accessGranted) {
+        return;
+    }
 
     const enteredPassword = passwordInput.value;
 
     if (enteredPassword === correctPassword) {
 
-        passwordError.classList.remove("visible");
+        accessGranted = true;
 
+        passwordError.classList.remove("visible");
         passwordScreen.classList.remove("error");
         passwordScreen.classList.add("success");
 
         passwordInput.disabled = true;
         passwordSubmit.disabled = true;
 
-        // Ferma il vinile quando l'accesso è autorizzato.
+        /*
+         * 1. FERMA IL VINILE
+         */
 
         passwordAudio.pause();
         passwordAudio.currentTime = 0;
-
         passwordAudioStarted = false;
 
-        // Nasconde la schermata di accesso.
+        /*
+         * 2. AVVIA LA MUSICA PRINCIPALE
+         *
+         * La chiamata avviene direttamente
+         * durante l'invio del modulo.
+         */
+
+        await startBackgroundAudio();
+
+        /*
+         * 3. NASCONDE LA SCHERMATA PASSWORD
+         */
 
         setTimeout(function() {
 
@@ -1249,8 +1244,6 @@ passwordForm.addEventListener("submit", function(event) {
     } else {
 
         passwordScreen.classList.remove("error");
-
-        // Riavvia l'animazione di errore.
 
         void passwordScreen.offsetWidth;
 
@@ -1274,7 +1267,9 @@ passwordForm.addEventListener("submit", function(event) {
 
 });
 
-// Rimuove il messaggio di errore mentre si digita.
+/* =========================
+   RIMOZIONE ERRORE
+========================= */
 
 passwordInput.addEventListener("input", function() {
 
@@ -1288,16 +1283,13 @@ passwordInput.addEventListener("input", function() {
 ========================= */
 
 const targetDate = new Date(
-    "2026-11-26T18:08:00+01:00"
+    "2026-11-28T14:00:00+01:00"
 ).getTime();
 
 const daysElement = document.getElementById("days");
 const hoursElement = document.getElementById("hours");
 const minutesElement = document.getElementById("minutes");
 const secondsElement = document.getElementById("seconds");
-
-const announcement = document.getElementById("announcement");
-const debugButton = document.getElementById("debug-toggle");
 
 function unlockContent() {
 
@@ -1354,69 +1346,7 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 /* =========================
-   AUDIO PRINCIPALE
-========================= */
-
-const audio = document.getElementById("background-audio");
-const audioButton = document.getElementById("audio-toggle");
-const audioText = audioButton.querySelector(".audio-text");
-
-audio.volume = 0.25;
-
-function updateAudioButton(isPlaying) {
-
-    audioButton.classList.toggle("playing", isPlaying);
-
-    audioText.textContent = isPlaying
-        ? "DISATTIVA AUDIO"
-        : "ATTIVA AUDIO";
-
-    audioButton.setAttribute(
-        "aria-label",
-        isPlaying ? "Disattiva audio" : "Attiva audio"
-    );
-
-}
-
-audioButton.addEventListener("click", async function() {
-
-    if (audio.paused) {
-
-        try {
-
-            await audio.play();
-            updateAudioButton(true);
-
-        } catch (error) {
-
-            console.error("Errore nella riproduzione audio:", error);
-            audioText.textContent = "AUDIO NON DISPONIBILE";
-
-        }
-
-    } else {
-
-        audio.pause();
-        updateAudioButton(false);
-
-    }
-
-});
-
-audio.addEventListener("play", function() {
-    updateAudioButton(true);
-});
-
-audio.addEventListener("pause", function() {
-    updateAudioButton(false);
-});
-
-audio.addEventListener("error", function() {
-    console.error("Impossibile caricare background.mp3");
-});
-
-/* =========================
-   MODALITÀ PROVA
+   MODALITÀ DEBUG
 ========================= */
 
 if (
