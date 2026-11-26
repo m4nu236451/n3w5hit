@@ -44,7 +44,66 @@ body {
 }
 
 /* =========================
-   PASSWORD SCREEN
+   EFFETTO LAMPEGGIANTE
+========================= */
+
+@keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(255,255,255,0.15);
+    }
+
+    20%, 24%, 55% {
+        opacity: 0.65;
+        text-shadow: none;
+    }
+}
+
+@keyframes redFlicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        text-shadow:
+            0 0 8px rgba(229,9,20,0.8),
+            0 0 20px rgba(229,9,20,0.4);
+    }
+
+    20%, 24%, 55% {
+        opacity: 0.55;
+        text-shadow: none;
+    }
+}
+
+@keyframes subtleBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.72; }
+}
+
+.password-title,
+.intro-content h1,
+.page-section h2 {
+    animation: flicker 5s infinite;
+}
+
+.password-eyebrow,
+.eyebrow,
+.artist-name,
+.release-month {
+    animation: redFlicker 4s infinite;
+}
+
+.password-brand,
+.brand {
+    animation: subtleBlink 3s infinite;
+}
+
+.password-description,
+.section-description,
+.release-date {
+    animation: subtleBlink 4s infinite;
+}
+
+/* =========================
+   SCHERMATA PASSWORD
 ========================= */
 
 #password-screen {
@@ -165,6 +224,7 @@ body {
 
 #password-error.visible {
     opacity: 1;
+    animation: redFlicker 0.8s infinite;
 }
 
 .password-footer {
@@ -174,7 +234,7 @@ body {
     letter-spacing: 3px;
 }
 
-/* ERRORE */
+/* ERRORE PASSWORD */
 
 @keyframes passwordShake {
     0%, 100% { transform: translateX(0); }
@@ -188,7 +248,7 @@ body {
 
 #password-screen.error #password-input {
     border-color: var(--accent);
-    box-shadow: 0 0 25px rgba(229,9,20,0.35);
+    box-shadow: 0 0 25px rgba(229,9,20,0.6);
 }
 
 #password-screen.error .password-title {
@@ -208,7 +268,7 @@ body {
 }
 
 /* =========================
-   VIDEO SFONDO
+   VIDEO DI SFONDO
 ========================= */
 
 #background-video {
@@ -333,6 +393,7 @@ body {
     font-weight: 800;
     font-size: clamp(2rem, 6vw, 4.5rem);
     line-height: 1;
+    animation: subtleBlink 3s infinite;
 }
 
 .time-unit small {
@@ -347,6 +408,7 @@ body {
     font-size: clamp(1.5rem, 4vw, 3rem);
     color: var(--accent);
     margin-top: -20px;
+    animation: redFlicker 2s infinite;
 }
 
 .bottom-label {
@@ -359,6 +421,7 @@ body {
     letter-spacing: 3px;
     gap: 8px;
     transition: color 0.3s;
+    animation: subtleBlink 3s infinite;
 }
 
 .bottom-label:hover {
@@ -509,6 +572,7 @@ main.unlocked::after {
     transition: background 0.3s ease,
                 padding-left 0.3s ease,
                 text-shadow 0.3s ease;
+    animation: subtleBlink 5s infinite;
 }
 
 .track:hover {
@@ -587,7 +651,7 @@ main.unlocked::after {
 }
 
 /* =========================
-   AUDIO
+   AUDIO PRINCIPALE
 ========================= */
 
 #audio-toggle {
@@ -655,11 +719,6 @@ footer {
     background: rgba(5,5,5,0.35);
 }
 
-footer .brand {
-    color: var(--text);
-    margin-bottom: 10px;
-}
-
 /* DEBUG */
 
 #debug-toggle {
@@ -677,7 +736,9 @@ footer .brand {
     opacity: 0.7;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
 
@@ -690,8 +751,8 @@ footer .brand {
         letter-spacing: 1px;
     }
 
-    .top-label {
-        font-size: 0.6rem;
+    .intro-content h1 {
+        font-size: clamp(2.4rem, 9vw, 4rem);
     }
 
     .intro-description {
@@ -724,11 +785,6 @@ footer .brand {
     .tracklist .track span:last-child {
         color: #ff555d;
         text-shadow: 0 0 10px rgba(229,9,20,0.7);
-    }
-
-    .tracklist .track:hover {
-        background: rgba(229,9,20,0.16);
-        box-shadow: inset 3px 0 0 #e50914;
     }
 
     .track span:last-child {
@@ -765,13 +821,24 @@ footer .brand {
     .password-footer {
         margin-top: 55px;
     }
+
+    #password-input {
+        font-size: 1.3rem;
+    }
 }
 
+/* RISPETTO ANIMAZIONI RIDOTTE */
+
 @media (prefers-reduced-motion: reduce) {
-    .scroll-arrow,
-    #audio-toggle.playing .audio-indicator {
-        animation: none;
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
     }
+
 }
 
 </style>
@@ -779,7 +846,9 @@ footer .brand {
 
 <body>
 
-<!-- PASSWORD SCREEN -->
+<!-- =========================
+     SCHERMATA DI ACCESSO
+========================= -->
 
 <div id="password-screen">
 
@@ -790,15 +859,15 @@ footer .brand {
         </div>
 
         <p class="password-eyebrow">
-            RESTRICTED ACCESS
+            ACCESSO RISERVATO
         </p>
 
         <h1 class="password-title">
-            INSERISCI<br>PASSWORD
+            ACCESSO<br>NEGATO.
         </h1>
 
         <p class="password-description">
-            CONTENUTO PROTETTO<br>
+            QUESTO CONTENUTO È PROTETTO.<br>
             INSERISCI IL CODICE PER CONTINUARE.
         </p>
 
@@ -827,14 +896,24 @@ footer .brand {
         </form>
 
         <p class="password-footer">
-            M4NU
+            M4NU / SISTEMA PRIVATO
         </p>
 
     </div>
 
 </div>
 
-<!-- VIDEO DI SFONDO -->
+<!-- =========================
+     AUDIO SCHERMATA PASSWORD
+========================= -->
+
+<audio id="password-audio" loop preload="auto">
+    <source src="vinile.mp3" type="audio/mpeg">
+</audio>
+
+<!-- =========================
+     VIDEO DI SFONDO
+========================= -->
 
 <video id="background-video" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
@@ -842,7 +921,9 @@ footer .brand {
 
 <div class="background-overlay"></div>
 
-<!-- AUDIO -->
+<!-- =========================
+     AUDIO PRINCIPALE
+========================= -->
 
 <audio id="background-audio" loop preload="auto">
     <source src="background.mp3" type="audio/mpeg">
@@ -854,7 +935,9 @@ footer .brand {
     <span class="audio-indicator"></span>
 </button>
 
-<!-- COUNTDOWN -->
+<!-- =========================
+     COUNTDOWN
+========================= -->
 
 <section id="countdown-screen">
 
@@ -867,7 +950,7 @@ footer .brand {
         <p class="eyebrow">M4NU</p>
 
         <h1>
-            <span>L'ATTESA</span> E' FINITA
+            <span>L'ATTESA</span> È FINITA
         </h1>
 
         <div class="countdown">
@@ -899,6 +982,7 @@ footer .brand {
             </div>
 
         </div>
+
     </div>
 
     <a href="#announcement" class="bottom-label">
@@ -908,7 +992,9 @@ footer .brand {
 
 </section>
 
-<!-- ANNUNCIO -->
+<!-- =========================
+     ANNUNCIO
+========================= -->
 
 <main id="announcement" class="locked">
 
@@ -919,7 +1005,7 @@ footer .brand {
         <p class="eyebrow">01 / IL PROGETTO</p>
 
         <p class="section-description">
-            IL PROGETTO PIU' AMBIZIOSO
+            IL PROGETTO PIÙ AMBIZIOSO
         </p>
 
         <img
@@ -938,7 +1024,7 @@ footer .brand {
 
     <section class="page-section">
 
-        <p class="eyebrow">02 / TRACKLIST</p>
+        <p class="eyebrow">02 / ELENCO TRACCE</p>
 
         <h2>TRACKLIST</h2>
 
@@ -990,7 +1076,7 @@ footer .brand {
 
     </section>
 
-    <!-- RELEASE -->
+    <!-- PUBBLICAZIONE -->
 
     <section class="page-section">
 
@@ -1021,7 +1107,9 @@ footer .brand {
 
 </main>
 
-<!-- FOOTER -->
+<!-- =========================
+     PIEDE PAGINA
+========================= -->
 
 <footer>
 
@@ -1034,15 +1122,17 @@ footer .brand {
 <!-- DEBUG -->
 
 <button id="debug-toggle" hidden>
-    TEST SBLOCCO
+    PROVA SBLOCCO
 </button>
 
-<!-- JAVASCRIPT -->
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
 <script>
 
 /* =========================
-   PASSWORD SYSTEM
+   SISTEMA PASSWORD
 ========================= */
 
 const correctPassword = "236451";
@@ -1051,6 +1141,56 @@ const passwordScreen = document.getElementById("password-screen");
 const passwordForm = document.getElementById("password-form");
 const passwordInput = document.getElementById("password-input");
 const passwordError = document.getElementById("password-error");
+const passwordSubmit = document.getElementById("password-submit");
+
+/* =========================
+   AUDIO VINILE
+========================= */
+
+const passwordAudio = document.getElementById("password-audio");
+
+passwordAudio.volume = 0.35;
+
+let passwordAudioStarted = false;
+
+async function startPasswordAudio() {
+
+    if (passwordAudioStarted || passwordScreen.classList.contains("hidden")) {
+        return;
+    }
+
+    try {
+
+        await passwordAudio.play();
+        passwordAudioStarted = true;
+
+    } catch (error) {
+
+        // Alcuni browser bloccano l'audio automatico.
+        // Verrà riprovato dopo la prima interazione dell'utente.
+
+    }
+
+}
+
+// Tentativo automatico all'apertura
+startPasswordAudio();
+
+// Avvia l'audio alla prima interazione se il browser
+// ha bloccato la riproduzione automatica.
+
+function enablePasswordAudio() {
+
+    if (!passwordAudioStarted && !passwordScreen.classList.contains("hidden")) {
+        startPasswordAudio();
+    }
+
+}
+
+document.addEventListener("pointerdown", enablePasswordAudio);
+document.addEventListener("keydown", enablePasswordAudio);
+
+// Verifica password
 
 passwordForm.addEventListener("submit", function(event) {
 
@@ -1066,7 +1206,16 @@ passwordForm.addEventListener("submit", function(event) {
         passwordScreen.classList.add("success");
 
         passwordInput.disabled = true;
-        document.getElementById("password-submit").disabled = true;
+        passwordSubmit.disabled = true;
+
+        // Ferma il vinile quando l'accesso è autorizzato.
+
+        passwordAudio.pause();
+        passwordAudio.currentTime = 0;
+
+        passwordAudioStarted = false;
+
+        // Nasconde la schermata di accesso.
 
         setTimeout(function() {
 
@@ -1078,12 +1227,14 @@ passwordForm.addEventListener("submit", function(event) {
 
         passwordScreen.classList.remove("error");
 
-        // Riavvia l'animazione di errore
+        // Riavvia l'animazione di errore.
+
         void passwordScreen.offsetWidth;
 
         passwordScreen.classList.add("error");
 
         passwordError.textContent = "ACCESSO NEGATO — RIPROVA";
+
         passwordError.classList.add("visible");
 
         passwordInput.value = "";
@@ -1091,14 +1242,17 @@ passwordForm.addEventListener("submit", function(event) {
         passwordInput.focus();
 
         setTimeout(function() {
+
             passwordScreen.classList.remove("error");
+
         }, 500);
 
     }
 
 });
 
-// Rimuove il messaggio mentre si digita
+// Rimuove il messaggio di errore mentre si digita.
+
 passwordInput.addEventListener("input", function() {
 
     passwordError.classList.remove("visible");
@@ -1177,7 +1331,7 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 /* =========================
-   AUDIO
+   AUDIO PRINCIPALE
 ========================= */
 
 const audio = document.getElementById("background-audio");
@@ -1212,7 +1366,7 @@ audioButton.addEventListener("click", async function() {
 
         } catch (error) {
 
-            console.error("Errore riproduzione audio:", error);
+            console.error("Errore nella riproduzione audio:", error);
             audioText.textContent = "AUDIO NON DISPONIBILE";
 
         }
@@ -1239,7 +1393,7 @@ audio.addEventListener("error", function() {
 });
 
 /* =========================
-   DEBUG
+   MODALITÀ PROVA
 ========================= */
 
 if (
@@ -1256,13 +1410,15 @@ if (
 
             announcement.classList.remove("locked");
             announcement.classList.add("unlocked");
-            debugButton.textContent = "TEST BLOCCO";
+
+            debugButton.textContent = "PROVA BLOCCO";
 
         } else {
 
             announcement.classList.remove("unlocked");
             announcement.classList.add("locked");
-            debugButton.textContent = "TEST SBLOCCO";
+
+            debugButton.textContent = "PROVA SBLOCCO";
 
         }
 
